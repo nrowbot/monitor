@@ -1,0 +1,23 @@
+<div class="container">
+    <h1 class="mt-5">Host Monitor Dashboard</h1>
+    <table class="table table-striped mt-4">
+        <thead>
+        <tr>
+            <th>Host</th>
+            <th>Status</th>
+            <th>Avg Latency (ms)</th>
+            <th>Avg Packet Loss (%)</th>
+            <th>Latency Chart</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let entry of metrics | keyvalue">
+            <td>{{ entry.key }}</td>
+            <td [class]="getStatusClass(entry.value.Status)">{{ entry.value.Status.toUpperCase() }}</td>
+            <td>{{ entry.value.AvgLatency.toFixed(2) }}</td>
+            <td>{{ entry.value.AvgPacketLoss.toFixed(2) }}</td>
+            <td><canvas id="chart-{{ entry.key }}"></canvas></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

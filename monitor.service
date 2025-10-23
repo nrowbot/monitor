@@ -1,0 +1,12 @@
+[Unit]
+Description=Monitor Daemon
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/monitor --hosts=google.com,example.com --port=8081 --interval=5
+Restart=always
+User=root  # Needs root for ICMP, or use setcap and run as non-root
+WorkingDirectory=/path/to/monitor
+
+[Install]
+WantedBy=multi-user.target
