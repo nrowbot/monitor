@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { interval, Subscription } from 'rxjs';
 
-declare const Chart: any;
+import { Chart } from 'chart.js';
 
 interface Metrics {
   Latency: number;
@@ -29,7 +29,7 @@ interface HostMetrics {
 export class AppComponent implements AfterViewInit, OnDestroy {
   metrics: { [key: string]: HostMetrics } = {};
   private subscription: Subscription | undefined;
-  private charts: { [key: string]: typeof Chart } = {};
+  private charts: { [key: string]: Chart } = {};
 
   constructor(private http: HttpClient) {}
 

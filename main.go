@@ -16,13 +16,14 @@ import (
 	"monitor/usecase"
 )
 
-//go:embed frontend/dist/frontend
+//go:embed frontend/dist/frontend/browser
 var distFS embed.FS
 
 func main() {
 	hostsStr := flag.String("hosts", "", "Comma-separated list of hosts to monitor (required)")
 	port := flag.Int("port", 8081, "Port for the web server")
 	interval := flag.Int("interval", 5, "Ping interval in seconds")
+	verbose := flag.Bool("verbose", false, "Enable verbose logging")
 	flag.Parse()
 
 	if *hostsStr == "" {
@@ -36,7 +37,7 @@ func main() {
 	}
 
 	pinger := ping.NewPinger()
-	monitorUsecase := usecase.NewMonitorUsecase(hostRepo, pinger, time.Duration(*interval)*time.Second)
+	monitorUsecase := usecase.NewMonitorUsecase(hostRepo, pinger, time.Duration(*interval)*time.Second, *verbose)
 
 	go monitorUsecase.Start()
 

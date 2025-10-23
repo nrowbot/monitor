@@ -22,7 +22,12 @@ type Server struct {
 }
 
 func NewServer(port int, hostRepo map[string]*domain.Host, distFS embed.FS) *Server {
-	content, err := fs.Sub(distFS, "frontend/dist/frontend")
+	content, err := fs.Sub(distFS, "frontend/dist/frontend/browser")
+	entries, _ := fs.ReadDir(content, ".")
+	for _, e := range entries {
+		log.Println("Embedded file:", e.Name())
+	}
+
 	if err != nil {
 		log.Fatal("Failed to sub embed FS: ", err)
 	}
