@@ -5,7 +5,7 @@ build: frontend-build
 	go build -o monitor main.go
 
 test:
-	go test ./...
+	cd frontend && npm run test 
 
 clean:
 	rm -f monitor
