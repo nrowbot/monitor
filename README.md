@@ -13,7 +13,7 @@ This is a Golang-based host monitoring tool that pings specified hosts at regula
 5. Build frontend: `make frontend-build`.
 6. Build Go: `make build`.
 7. Grant capabilities: `sudo setcap cap_net_raw+eip ./monitor`.
-8. Run: `./monitor --hosts=google.com,example.com --port=8081 --interval=5`.
+8. Run: `./monitor --hosts=google.com,1.1.1.1,192.168.1.3 --interval=5 --port=8081 --verbose`.
 9. Access dashboard: http://localhost:8081.
 
 For development: After changing Angular, run `make frontend-build` then restart the server.
