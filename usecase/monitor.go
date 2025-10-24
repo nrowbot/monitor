@@ -60,13 +60,22 @@ func (u *MonitorUsecase) monitorHost(host string) {
 			start := time.Now()
 			latency, packetLoss, err := u.pinger.Ping(host)
 			status := "up"
-			if err != nil {
+			switch {
+			case err != nil || packetLoss >= 80:
 				status = "down"
-				latency = 0
-				packetLoss = 100
+			case packetLoss >= 20:
+				status = "degraded"
+			}
+
+			if err != nil || packetLoss == 100 {
 				if u.verbose {
-					log.Printf("[monitor] Error pinging %s: %v", host, err)
+					if err != nil {
+						log.Printf("[monitor] Error pinging %s: %v", host, err)
+					} else {
+						log.Printf("[monitor] No response from %s (100%% loss)", host)
+					}
 				}
+				latency = 0
 			}
 
 			metrics := domain.Metrics{

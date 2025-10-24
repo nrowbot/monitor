@@ -1,5 +1,49 @@
 <div class="container">
     <h1 class="mt-5">Host Monitor Dashboard</h1>
+    
+    <div class="dashboard-chart-container">
+        <canvas id="dashboard-chart"></canvas>
+    </div>
+      
+    <div class="dashboard-summary" *ngIf="metrics | keyvalue as entries">
+        <div class="summary-card">
+            <h3>Total Hosts</h3>
+            <p>{{ getDashboardSummary().total }}</p>
+        </div>
+      
+        <div class="summary-card">
+            <h3>Hosts Up</h3>
+            <p class="status-up">{{ getDashboardSummary().up }}</p>
+        </div>
+      
+        <div class="summary-card">
+            <h3>Hosts Down</h3>
+            <p class="status-down">{{ getDashboardSummary().down }}</p>
+        </div>
+      
+        <div class="summary-card">
+            <h3>Avg Latency</h3>
+            <p>{{ getDashboardSummary().avgLatency | number:'1.0-2' }} ms</p>
+        </div>
+      
+        <div class="summary-card">
+            <h3>Avg Packet Loss</h3>
+            <p>{{ getDashboardSummary().avgPacketLoss | number:'1.0-2' }}%</p>
+        </div>
+      
+        <div class="summary-card">
+            <h3>Worst Connected Host</h3>
+            <p>{{ getDashboardSummary().worstHost }}</p>
+        </div>
+
+        <div class="summary-card">
+            <h3>Network Health</h3>
+            <p [ngClass]="{
+              'status-up': getDashboardSummary().health === 'Good',
+              'status-down': getDashboardSummary().health === 'Critical'
+            }">{{ getDashboardSummary().health }}</p>
+        </div>          
+    </div>      
     <table class="table table-striped mt-4">
         <thead>
         <tr>
@@ -11,13 +55,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let entry of metrics | keyvalue">
-            <td>{{ entry.key }}</td>
-            <td [class]="getStatusClass(entry.value.Status)">{{ entry.value.Status.toUpperCase() }}</td>
-            <td>{{ entry.value.AvgLatency.toFixed(2) }}</td>
-            <td>{{ entry.value.AvgPacketLoss.toFixed(2) }}</td>
-            <td><canvas id="chart-{{ entry.key }}"></canvas></td>
-        </tr>
+            <tr *ngFor="let entry of metrics | keyvalue; trackBy: trackByHost">
+                <td>{{ entry.key }}</td>
+                <td [class]="getStatusClass(entry.value.Status)">{{ entry.value.Status.toUpperCase() }}</td>
+                <td>{{ entry.value.AvgLatency.toFixed(2) }}</td>
+                <td>{{ entry.value.AvgPacketLoss.toFixed(2) }}</td>
+                <td><canvas id="chart-{{ sanitizeId(entry.key) }}"></canvas></td>
+              </tr>
         </tbody>
     </table>
 </div>
