@@ -19,6 +19,7 @@ This is a Golang-based host monitoring tool that pings specified hosts at regula
 For development: After changing Angular, run `make frontend-build` then restart the server.
 
 ### Docker
+Note: This would need additional troubleshooting to work on all systems. Currently on MacOS, for example, it will only scan Internet hosts, not local network hosts due to the native Docker networking set up on MacOS.
 
 Build: `docker build -t monitor -f Dockerfile .`
 
@@ -34,6 +35,6 @@ Run: `docker run -d -p 8081:8081 --cap-add=NET_RAW monitor --hosts=google.com --
 - **Polling**: Frontend polls /metrics every 5s via Angular's HttpClient and setInterval.
 - **Metrics**: In-memory history (last 10 pings) for averages. Expandable to persistent storage.
 - **Systemd**: Daemonizes with restart.
-- **Best Practices**: Flags for config, graceful shutdown, logging. Multi-stage Docker for building frontend and backend.
+- **Best Practices**: Flags for config, graceful shutdown, logging (with --verbose). Multi-stage Docker for building frontend and backend.
 
 Tests: Basic, covers frontend. Expand as needed
